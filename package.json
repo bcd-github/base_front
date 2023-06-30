@@ -1,7 +1,7 @@
 {
   "name": "ruoyi",
   "version": "3.8.5",
-  "description": "若依管理系统",
+  "description": "御霖管理系统",
   "author": "若依",
   "license": "MIT",
   "scripts": {
@@ -39,6 +39,7 @@
     "vite": "3.2.3",
     "vite-plugin-compression": "0.5.1",
     "vite-plugin-svg-icons": "2.0.1",
+    "vite-plugin-vue-devtools": "^0.4.10",
     "vite-plugin-vue-setup-extend": "0.4.0"
   }
 }
