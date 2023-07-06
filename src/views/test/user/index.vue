@@ -27,7 +27,7 @@
     <div style="height: 50px;display: flex; justify-content: space-around">
       <el-button @click="openAddUserDialog" type="success" plain>新增</el-button>
       <el-button @click="deleteUser" :disabled="ids.length === 0" type="info" plain>删除</el-button>
-      <right-toolbar v-model:showSearch="showSearch" @queryTable="getList"></right-toolbar>
+      <right-toolbar v-model:showSearch="showSearch" @queryTable="getTableData"></right-toolbar>
     </div>
 
     <el-table :data="userList" style="width: 100%" @selection-change="handleSelectionChange">
@@ -81,7 +81,7 @@ let userForm = reactive({})
 const visible = ref(false)
 const queryParams = reactive({
   pageNum: 1,
-  pageSize: 5,
+  pageSize: 10,
   name: '',
   age: ''
 })
