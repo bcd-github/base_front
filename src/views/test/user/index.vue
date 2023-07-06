@@ -1,7 +1,35 @@
 <template>
   <div class="app-container">
-    <el-button @click="openAddUserDialog">新增</el-button>
-    <el-button @click="deleteUser" :disabled="ids.length === 0">删除</el-button>
+    <el-form :model="queryParams" ref="queryRef" :inline="true" label-width="68px" v-if="showSearch">
+      <el-form-item label="角色名称" prop="name">
+        <el-input
+            v-model="queryParams.name"
+            placeholder="请输入角色名称"
+            clearable
+            style="width: 240px"
+            @keyup.enter="handleQuery"
+        />
+      </el-form-item>
+      <el-form-item label="年龄" prop="age">
+        <el-input
+            v-model="queryParams.age"
+            placeholder="请输入年龄"
+            clearable
+            style="width: 240px"
+            @keyup.enter="handleQuery"
+        />
+      </el-form-item>
+      <el-form-item>
+        <el-button type="primary" icon="Search" @click="handleQuery">搜索</el-button>
+        <el-button icon="Refresh" @click="resetQuery">重置</el-button>
+      </el-form-item>
+    </el-form>
+    <div style="height: 50px;display: flex; justify-content: space-around">
+      <el-button @click="openAddUserDialog" type="success" plain>新增</el-button>
+      <el-button @click="deleteUser" :disabled="ids.length === 0" type="info" plain>删除</el-button>
+      <right-toolbar v-model:showSearch="showSearch" @queryTable="getList"></right-toolbar>
+    </div>
+
     <el-table :data="userList" style="width: 100%" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55"/>
       <el-table-column prop="name" label="姓名" width="180"/>
@@ -10,7 +38,7 @@
       <el-table-column prop="weight" label="体重"/>
       <el-table-column label="操作">
         <template #default="scope">
-          <el-button @click="openEditUserDialog(scope.row)">编辑</el-button>
+          <el-button @click="openEditUserDialog(scope.row)" type="primary" :icon="Edit" circle></el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -45,7 +73,7 @@
 <script setup name="userManage">
 import {getCurrentInstance, isReactive, reactive, ref, toRaw, toRefs,} from 'vue'
 import {getList, addUser, delUser, editUser} from "@/api/tt";
-
+import {Edit} from '@element-plus/icons-vue'
 
 const {proxy} = getCurrentInstance();
 const userList = ref([])
@@ -53,16 +81,28 @@ let userForm = reactive({})
 const visible = ref(false)
 const queryParams = reactive({
   pageNum: 1,
-  pageSize: 5
+  pageSize: 5,
+  name: '',
+  age: ''
 })
 const totalData = ref(0);
 const isEdit = ref(false)
+const showSearch = ref(true)
 
 
 async function getTableData() {
   const {rows, total} = await getList(queryParams)
   userList.value = rows
   totalData.value = total
+}
+
+async function handleQuery() {
+  await getTableData()
+}
+
+function resetQuery() {
+  proxy.resetForm("queryRef");
+  handleQuery()
 }
 
 function reset() {
