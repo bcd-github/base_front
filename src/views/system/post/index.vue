@@ -229,6 +229,7 @@ function handleAdd() {
 /** 修改按钮操作 */
 function handleUpdate(row) {
   reset();
+  console.log(row,'row')
   const postId = row.postId || ids.value;
   getPost(postId).then(response => {
     form.value = response.data;
