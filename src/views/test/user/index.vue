@@ -20,6 +20,15 @@
         />
       </el-form-item>
       <el-form-item>
+        <el-date-picker
+            v-model="timeRange"
+            type="daterange"
+            start-placeholder="开始时间"
+            end-placeholder="结束时间"
+            format="YYYY-MM-DD HH:mm:ss"
+        />
+      </el-form-item>
+      <el-form-item>
         <el-button type="primary" icon="Search" @click="handleQuery">搜索</el-button>
         <el-button icon="Refresh" @click="resetQuery">重置</el-button>
       </el-form-item>
@@ -36,6 +45,7 @@
       <el-table-column prop="age" label="年龄"/>
       <el-table-column prop="height" label="身高"/>
       <el-table-column prop="weight" label="体重"/>
+      <el-table-column prop="createTime" label="创建日期"/>
       <el-table-column label="操作">
         <template #default="scope">
           <el-button @click="openEditUserDialog(scope.row)" type="primary" :icon="Edit" circle></el-button>
@@ -64,6 +74,9 @@
         <el-form-item label="体重">
           <el-input v-model="userForm.weight"></el-input>
         </el-form-item>
+        <el-form-item label="创建日期" v-if="!isEdit">
+          <el-date-picker v-model="userForm.createTime" format="YYYY-MM-DD HH:mm:ss"></el-date-picker>
+        </el-form-item>
       </el-form>
       <el-button @click="submitForm">提交</el-button>
     </el-dialog>
@@ -74,6 +87,7 @@
 import {getCurrentInstance, isReactive, reactive, ref, toRaw, toRefs,} from 'vue'
 import {getList, addUser, delUser, editUser} from "@/api/tt";
 import {Edit} from '@element-plus/icons-vue'
+import {formatDate} from "@/utils/yulinBase/index.js";
 
 const {proxy} = getCurrentInstance();
 const userList = ref([])
@@ -83,8 +97,11 @@ const queryParams = reactive({
   pageNum: 1,
   pageSize: 10,
   name: '',
-  age: ''
+  age: '',
+  startTime: '',
+  endTime: ''
 })
+const timeRange = ref([])
 const totalData = ref(0);
 const isEdit = ref(false)
 const showSearch = ref(true)
@@ -97,11 +114,20 @@ async function getTableData() {
 }
 
 async function handleQuery() {
+  console.log(timeRange.value.length, 'timeRange')
+  if(timeRange.value.length !== 0) {
+    queryParams.startTime = formatDate(timeRange.value[0], 'yyyy-MM-dd HH:mm:ss')
+    queryParams.endTime = formatDate(timeRange.value[1], 'yyyy-MM-dd HH:mm:ss')
+  }else {
+    queryParams.startTime = ''
+    queryParams.endTime = ''
+  }
   await getTableData()
 }
 
 function resetQuery() {
   proxy.resetForm("queryRef");
+  timeRange.value = []
   handleQuery()
 }
 
@@ -115,6 +141,7 @@ function openAddUserDialog() {
   reset()
   isEdit.value = false
   visible.value = true
+
 }
 
 async function submitForm() {
@@ -126,6 +153,7 @@ async function submitForm() {
     await getTableData()
     return
   }
+  userForm.createTime = formatDate(userForm.createTime, 'yyyy-MM-dd HH:mm:ss')
   const {msg} = await addUser(userForm)
   proxy.$modal.msgSuccess(msg);
   visible.value = false
@@ -141,7 +169,9 @@ async function deleteUser() {
 function openEditUserDialog(row) {
   visible.value = true
   isEdit.value = true
+  console.log(row)
   userForm = reactive(JSON.parse(JSON.stringify(row)))
+
 }
 
 const ids = ref([])
