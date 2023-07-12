@@ -5,6 +5,7 @@
  * @returns
  */
 export function formatDate(date, format) {
+    console.log(date,typeof date)
     if(typeof date === "string"){
         return date
     }

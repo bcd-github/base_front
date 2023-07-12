@@ -22,7 +22,7 @@
       <el-form-item label="时间范围" prop="timeRange">
         <el-date-picker
             v-model="timeRange"
-            type="daterange"
+            type="datetimerange"
             start-placeholder="开始时间"
             end-placeholder="结束时间"
             format="YYYY-MM-DD HH:mm:ss"
@@ -60,7 +60,7 @@
         @pagination="getTableData"
     />
 
-    <el-dialog v-model="visible">
+    <el-dialog v-model="visible" :title="isEdit ? '编辑' :'新增'">
       <el-form ref="form1" :model="userForm">
         <el-form-item label="姓名">
           <el-input v-model="userForm.name"></el-input>
@@ -75,7 +75,7 @@
           <el-input v-model="userForm.weight"></el-input>
         </el-form-item>
         <el-form-item label="创建日期" v-if="!isEdit">
-          <el-date-picker v-model="userForm.createTime" format="YYYY-MM-DD HH:mm:ss"></el-date-picker>
+          <el-date-picker v-model="userForm.createTime" format="YYYY-MM-DD HH:mm:ss" type="datetime"></el-date-picker>
         </el-form-item>
       </el-form>
       <el-button @click="submitForm">提交</el-button>
@@ -84,14 +84,16 @@
 </template>
 
 <script setup name="userManage">
-import {getCurrentInstance, isReactive, reactive, ref, toRaw, toRefs,} from 'vue'
+import {getCurrentInstance, reactive, ref, toRefs,} from 'vue'
 import {getList, addUser, delUser, editUser} from "@/api/tt";
 import {Edit} from '@element-plus/icons-vue'
 import {formatDate} from "@/utils/yulinBase/index.js";
 
 const {proxy} = getCurrentInstance();
 const userList = ref([])
-let userForm = reactive({})
+let userForm = reactive({
+  createTime: new Date()
+})
 const visible = ref(false)
 const queryParams = reactive({
   pageNum: 1,
@@ -102,12 +104,11 @@ const queryParams = reactive({
   endTime: '',
   timeRange: []
 })
-// const timeRange = ref([])
 const totalData = ref(0);
 const isEdit = ref(false)
 const showSearch = ref(true)
-
 let {timeRange} = toRefs(queryParams)
+const ids = ref([])
 
 async function getTableData() {
   const {rows, total} = await getList(queryParams)
@@ -134,6 +135,7 @@ function resetQuery() {
 function reset() {
   Object.keys(userForm).forEach((key) => {
     userForm[key] = undefined
+    if (key === 'createTime') userForm[key] = new Date()
   })
 }
 
@@ -141,7 +143,6 @@ function openAddUserDialog() {
   reset()
   isEdit.value = false
   visible.value = true
-
 }
 
 async function submitForm() {
@@ -173,7 +174,6 @@ function openEditUserDialog(row) {
   userForm = reactive(JSON.parse(JSON.stringify(row)))
 }
 
-const ids = ref([])
 
 function handleSelectionChange(val) {
   ids.value = []

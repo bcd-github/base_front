@@ -41,6 +41,8 @@ export default defineConfig(({ mode, command }) => {
     css: {
       postcss: {
         plugins: [
+          require('tailwindcss'),
+          require('autoprefixer'),
           {
             postcssPlugin: 'internal:charset-removal',
             AtRule: {
@@ -50,7 +52,8 @@ export default defineConfig(({ mode, command }) => {
                 }
               }
             }
-          }
+          },
+
         ]
       }
     }
