@@ -19,7 +19,7 @@
             @keyup.enter="handleQuery"
         />
       </el-form-item>
-      <el-form-item>
+      <el-form-item label="时间范围" prop="timeRange">
         <el-date-picker
             v-model="timeRange"
             type="daterange"
@@ -99,13 +99,15 @@ const queryParams = reactive({
   name: '',
   age: '',
   startTime: '',
-  endTime: ''
+  endTime: '',
+  timeRange: []
 })
-const timeRange = ref([])
+// const timeRange = ref([])
 const totalData = ref(0);
 const isEdit = ref(false)
 const showSearch = ref(true)
 
+let {timeRange} = toRefs(queryParams)
 
 async function getTableData() {
   const {rows, total} = await getList(queryParams)
@@ -114,11 +116,10 @@ async function getTableData() {
 }
 
 async function handleQuery() {
-  console.log(timeRange.value.length, 'timeRange')
-  if(timeRange.value.length !== 0) {
+  if (timeRange.value.length !== 0) {
     queryParams.startTime = formatDate(timeRange.value[0], 'yyyy-MM-dd HH:mm:ss')
     queryParams.endTime = formatDate(timeRange.value[1], 'yyyy-MM-dd HH:mm:ss')
-  }else {
+  } else {
     queryParams.startTime = ''
     queryParams.endTime = ''
   }
@@ -127,7 +128,6 @@ async function handleQuery() {
 
 function resetQuery() {
   proxy.resetForm("queryRef");
-  timeRange.value = []
   handleQuery()
 }
 
@@ -171,7 +171,6 @@ function openEditUserDialog(row) {
   isEdit.value = true
   console.log(row)
   userForm = reactive(JSON.parse(JSON.stringify(row)))
-
 }
 
 const ids = ref([])

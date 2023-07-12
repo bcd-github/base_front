@@ -8,6 +8,9 @@ export function formatDate(date, format) {
     if(typeof date === "string"){
         return date
     }
+    if(typeof date === "undefined" ||  date === null){
+        return ''
+    }
     const year = date.getFullYear();
     const month = date.getMonth() + 1;
     const day = date.getDate();
