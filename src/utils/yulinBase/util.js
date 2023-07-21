@@ -5,7 +5,6 @@
  * @returns
  */
 export function formatDate(date, format) {
-    console.log(date,typeof date)
     if(typeof date === "string"){
         return date
     }
@@ -30,4 +29,12 @@ export function formatDate(date, format) {
         .replace("HH", padZero(hours))
         .replace("mm", padZero(minutes))
         .replace("ss", padZero(seconds));
+}
+
+/**
+ * 自定义日志函数
+ * @param args
+ */
+export function log(args){
+    console.log("[卞成栋]",...arguments)
 }

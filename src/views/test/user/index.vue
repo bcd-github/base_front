@@ -87,9 +87,10 @@
 import {getCurrentInstance, reactive, ref, toRefs,} from 'vue'
 import {getList, addUser, delUser, editUser} from "@/api/tt";
 import {Edit} from '@element-plus/icons-vue'
-import {formatDate} from "@/utils/yulinBase/index.js";
+import {formatDate} from "@/utils/yulinBase/util.js";
 
 const {proxy} = getCurrentInstance();
+proxy.print(getCurrentInstance())
 const userList = ref([])
 let userForm = reactive({
   createTime: new Date()
@@ -183,6 +184,8 @@ function handleSelectionChange(val) {
 }
 
 getTableData()
+
+
 
 </script>
 

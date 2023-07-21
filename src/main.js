@@ -44,6 +44,7 @@ import TreeSelect from '@/components/TreeSelect'
 // 字典标签组件
 import DictTag from '@/components/DictTag'
 import './tailwind.css'
+import {log} from "@/utils/yulinBase/util";
 
 const app = createApp(App)
 
@@ -56,6 +57,7 @@ app.config.globalProperties.handleTree = handleTree
 app.config.globalProperties.addDateRange = addDateRange
 app.config.globalProperties.selectDictLabel = selectDictLabel
 app.config.globalProperties.selectDictLabels = selectDictLabels
+app.config.globalProperties.print = log
 
 // 全局组件挂载
 app.component('DictTag', DictTag)
