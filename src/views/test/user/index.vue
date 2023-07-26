@@ -60,6 +60,13 @@
         @pagination="getTableData"
     />
 
+    <div style="width: 1000px;height: 200px;overflow: auto" v-scroll="100">
+      <ol>
+        <li v-for="item in [1,2,1,2,2,2,1,12,1,2,1,12,2,12,12,21,21,21,222,2222,33333,112211,1221]">{{item}}</li>
+      </ol>
+    </div>
+
+
     <el-dialog v-model="visible" :title="isEdit ? '编辑' :'新增'">
       <el-form ref="form1" :model="userForm">
         <el-form-item label="姓名">
@@ -190,5 +197,18 @@ getTableData()
 </script>
 
 <style lang="scss" scoped>
-
+/* 修改滚动条的宽度和高度 */
+div::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+/* 修改滚动条的形状 */
+div::-webkit-scrollbar-thumb {
+  border-radius: 5px;
+  background-color: #1c84c6;
+}
+/* 修改滚动条轨道的形状 */
+div::-webkit-scrollbar-track {
+  border-radius: 5px;
+}
 </style>
