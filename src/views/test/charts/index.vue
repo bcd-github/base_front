@@ -6,12 +6,6 @@
     <div class="box" v-scroll="[100, 10]">
       <li v-for="item in 100" :key="item">{{ item }}</li>
     </div>
-    <div
-      style="width: 200px; height: 100px"
-      v-waterMarker="{ text: 'Geeker Admin', textColor: 'rgba(180, 180, 180, 0.6)' }"
-    ></div>
-
-    <el-button type="primary" v-longpress="longpress"> 长按2秒触发事件 </el-button>
   </div>
 </template>
 
@@ -19,17 +13,11 @@
   import * as echarts from "echarts"
   import { onUnmounted, onMounted } from "vue"
   import { ElMessage } from "element-plus"
-  const longpress = () => {
-    ElMessage.success("长按事件触发成功 🎉🎉🎉")
-  }
-  let myChart = null
-  let timer = null
+  import { useOnline } from "../../../hooks/useOnline"
+  import { useEcharts } from "../../../hooks/useEcharts"
   onMounted(() => {
-    var screenWidth = window.screen.width // 屏幕宽度
-    var screenHeight = window.screen.height // 屏幕高度
     const main = document.getElementById("box")
-    // 基于准备好的dom，初始化echarts实例
-    myChart = echarts.init(main)
+    let myChart = echarts.init(main)
     let data = reactive([
       {
         name: "1",
@@ -43,24 +31,7 @@
         name: "3",
         value: 10
       },
-      {
-        name: "4",
-        value: 10
-      },
-      {
-        name: "5",
-        value: 10
-      },
-      {
-        name: "6",
-        value: 20
-      },
-      {
-        name: "7",
-        value: 30
-      }
     ])
-
     const option = {
       color: ["#A0CE3A", "#31C5C0", "#1E9BD1", "#0F347B", "#585247", "#7F6AAD", "#009D85", "rgba(250,250,250,0.3)"],
       backgroundColor: "#000",
@@ -193,95 +164,7 @@
         }
       ]
     }
-
-    // 绘制图表
-    myChart.setOption(option)
-    let currentIndex = -1
-
-    const r = () => {
-      timer = setInterval(function () {
-        var dataLen = option.series[0].data.length
-        // 取消之前高亮的图形
-        myChart.dispatchAction({
-          type: "downplay",
-          seriesIndex: 0,
-          dataIndex: currentIndex
-        })
-        currentIndex = (currentIndex + 1) % dataLen
-        // 高亮当前图形
-        myChart.dispatchAction({
-          type: "highlight",
-          seriesIndex: 0,
-          dataIndex: currentIndex
-        })
-        // 显示 tooltip
-        myChart.dispatchAction({
-          type: "showTip",
-          seriesIndex: 0,
-          dataIndex: currentIndex
-        })
-      }, 2000)
-    }
-
-    r()
-
-    myChart.on("click", function (params) {
-      console.log(params)
-    })
-
-    myChart.on("mouseover", function (params) {
-      clearInterval(timer)
-    })
-
-    myChart.on("mouseout", function (params) {
-      r()
-    })
-
-    window.addEventListener("resize", function () {
-      myChart.resize()
-    })
-
-    setTimeout(() => {
-      myChart.setOption({
-        series: {
-          data: [
-            {
-              name: "21",
-              value: 102
-            },
-            {
-              name: "22",
-              value: 1220
-            },
-            {
-              name: "3",
-              value: 10
-            },
-            {
-              name: "4",
-              value: 10
-            },
-            {
-              name: "5",
-              value: 10
-            },
-            {
-              name: "6",
-              value: 20
-            },
-            {
-              name: "7",
-              value: 30
-            }
-          ]
-        }
-      })
-    }, 10000)
-  })
-
-  onUnmounted(() => {
-    clearInterval(timer)
-    myChart.dispose()
+    useEcharts(myChart, option, { openCarousel: true })
   })
 </script>
 
