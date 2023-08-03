@@ -1,14 +1,9 @@
-<template>
-  <div class="app-container home">
+<!-- @format -->
 
-  </div>
+<template>
+  <div class="app-container home"></div>
 </template>
 
-<script setup name="Index">
+<script setup name="Index"></script>
 
-</script>
-
-<style scoped lang="scss">
-
-</style>
-
+<style scoped lang="scss"></style>

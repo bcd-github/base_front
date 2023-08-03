@@ -1,3 +1,5 @@
-<template >
+<!-- @format -->
+
+<template>
   <router-view />
 </template>

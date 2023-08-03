@@ -1,3 +1,5 @@
+<!-- @format -->
+
 <template>
   <div class="icon-body">
     <el-input
@@ -13,8 +15,15 @@
     <div class="icon-list">
       <div class="list-container">
         <div v-for="(item, index) in iconList" class="icon-item-wrapper" :key="index" @click="selectedIcon(item)">
-          <div :class="['icon-item', { active: activeIcon === item }]">
-            <svg-icon :icon-class="item" class-name="icon" style="height: 25px;width: 16px;"/>
+          <div
+            :class="[
+              'icon-item',
+              {
+                active: activeIcon === item
+              }
+            ]"
+          >
+            <svg-icon :icon-class="item" class-name="icon" style="height: 25px; width: 16px" />
             <span>{{ item }}</span>
           </div>
         </div>
@@ -24,42 +33,42 @@
 </template>
 
 <script setup>
-import icons from './requireIcons'
+  import icons from "./requireIcons"
 
-const props = defineProps({
-  activeIcon: {
-    type: String
+  const props = defineProps({
+    activeIcon: {
+      type: String
+    }
+  })
+
+  const iconName = ref("")
+  const iconList = ref(icons)
+  const emit = defineEmits(["selected"])
+
+  function filterIcons() {
+    iconList.value = icons
+    if (iconName.value) {
+      iconList.value = icons.filter(item => item.indexOf(iconName.value) !== -1)
+    }
   }
-});
 
-const iconName = ref('');
-const iconList = ref(icons);
-const emit = defineEmits(['selected']);
-
-function filterIcons() {
-  iconList.value = icons
-  if (iconName.value) {
-    iconList.value = icons.filter(item => item.indexOf(iconName.value) !== -1)
+  function selectedIcon(name) {
+    emit("selected", name)
+    document.body.click()
   }
-}
 
-function selectedIcon(name) {
-  emit('selected', name)
-  document.body.click()
-}
+  function reset() {
+    iconName.value = ""
+    iconList.value = icons
+  }
 
-function reset() {
-  iconName.value = ''
-  iconList.value = icons
-}
-
-defineExpose({
-  reset
-})
+  defineExpose({
+    reset
+  })
 </script>
 
-<style lang='scss' scoped>
-   .icon-body {
+<style lang="scss" scoped>
+  .icon-body {
     width: 100%;
     padding: 10px;
     .icon-search {

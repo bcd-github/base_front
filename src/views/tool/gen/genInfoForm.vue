@@ -1,3 +1,5 @@
+<!-- @format -->
+
 <template>
   <el-form ref="genInfoForm" :model="info" :rules="rules" label-width="150px">
     <el-row>
@@ -71,7 +73,11 @@
           <tree-select
             v-model:value="info.parentMenuId"
             :options="menuOptions"
-            :objMap="{ value: 'menuId', label: 'menuName', children: 'children' }"
+            :objMap="{
+              value: 'menuId',
+              label: 'menuName',
+              children: 'children'
+            }"
             placeholder="请选择系统菜单"
           />
         </el-form-item>
@@ -116,7 +122,7 @@
         </el-form-item>
       </el-col>
     </el-row>
-    
+
     <template v-if="info.tplCategory == 'tree'">
       <h4 class="form-header">其他信息</h4>
       <el-row v-show="info.tplCategory == 'tree'">
@@ -218,64 +224,96 @@
         </el-col>
       </el-row>
     </template>
-
   </el-form>
 </template>
 
 <script setup>
-import { listMenu } from "@/api/system/menu";
+  import { listMenu } from "@/api/system/menu"
 
-const subColumns = ref([]);
-const menuOptions = ref([]);
-const { proxy } = getCurrentInstance();
+  const subColumns = ref([])
+  const menuOptions = ref([])
+  const { proxy } = getCurrentInstance()
 
-const props = defineProps({
-  info: {
-    type: Object,
-    default: null
-  },
-  tables: {
-    type: Array,
-    default: null
+  const props = defineProps({
+    info: {
+      type: Object,
+      default: null
+    },
+    tables: {
+      type: Array,
+      default: null
+    }
+  })
+
+  // 表单校验
+  const rules = ref({
+    tplCategory: [
+      {
+        required: true,
+        message: "请选择生成模板",
+        trigger: "blur"
+      }
+    ],
+    packageName: [
+      {
+        required: true,
+        message: "请输入生成包路径",
+        trigger: "blur"
+      }
+    ],
+    moduleName: [
+      {
+        required: true,
+        message: "请输入生成模块名",
+        trigger: "blur"
+      }
+    ],
+    businessName: [
+      {
+        required: true,
+        message: "请输入生成业务名",
+        trigger: "blur"
+      }
+    ],
+    functionName: [
+      {
+        required: true,
+        message: "请输入生成功能名",
+        trigger: "blur"
+      }
+    ]
+  })
+  function subSelectChange(value) {
+    props.info.subTableFkName = ""
   }
-});
-
-// 表单校验
-const rules = ref({
-  tplCategory: [{ required: true, message: "请选择生成模板", trigger: "blur" }],
-  packageName: [{ required: true, message: "请输入生成包路径", trigger: "blur" }],
-  moduleName: [{ required: true, message: "请输入生成模块名", trigger: "blur" }],
-  businessName: [{ required: true, message: "请输入生成业务名", trigger: "blur" }],
-  functionName: [{ required: true, message: "请输入生成功能名", trigger: "blur" }]
-});
-function subSelectChange(value) {
-  props.info.subTableFkName = "";
-}
-function tplSelectChange(value) {
-  if (value !== "sub") {
-    props.info.subTableName = "";
-    props.info.subTableFkName = "";
-  }
-}
-function setSubTableColumns(value) {
-  for (var item in props.tables) {
-    const name = props.tables[item].tableName;
-    if (value === name) {
-      subColumns.value = props.tables[item].columns;
-      break;
+  function tplSelectChange(value) {
+    if (value !== "sub") {
+      props.info.subTableName = ""
+      props.info.subTableFkName = ""
     }
   }
-}
-/** 查询菜单下拉树结构 */
-function getMenuTreeselect() {
-  listMenu().then(response => {
-    menuOptions.value = proxy.handleTree(response.data, "menuId");
-  });
-}
+  function setSubTableColumns(value) {
+    for (var item in props.tables) {
+      const name = props.tables[item].tableName
+      if (value === name) {
+        subColumns.value = props.tables[item].columns
+        break
+      }
+    }
+  }
+  /** 查询菜单下拉树结构 */
+  function getMenuTreeselect() {
+    listMenu().then(response => {
+      menuOptions.value = proxy.handleTree(response.data, "menuId")
+    })
+  }
 
-watch(() => props.info.subTableName, val => {
-  setSubTableColumns(val);
-});
+  watch(
+    () => props.info.subTableName,
+    val => {
+      setSubTableColumns(val)
+    }
+  )
 
-getMenuTreeselect();
+  getMenuTreeselect()
 </script>

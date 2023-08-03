@@ -1,4 +1,6 @@
-import useUserStore from '@/store/modules/user'
+/** @format */
+
+import useUserStore from "@/store/modules/user"
 
 /**
  * 字符权限校验
@@ -9,7 +11,7 @@ export function checkPermi(value) {
   if (value && value instanceof Array && value.length > 0) {
     const permissions = useUserStore().permissions
     const permissionDatas = value
-    const all_permission = "*:*:*";
+    const all_permission = "*:*:*"
 
     const hasPermission = permissions.some(permission => {
       return all_permission === permission || permissionDatas.includes(permission)
@@ -34,7 +36,7 @@ export function checkRole(value) {
   if (value && value instanceof Array && value.length > 0) {
     const roles = useUserStore().roles
     const permissionRoles = value
-    const super_admin = "admin";
+    const super_admin = "admin"
 
     const hasRole = roles.some(role => {
       return super_admin === role || permissionRoles.includes(role)

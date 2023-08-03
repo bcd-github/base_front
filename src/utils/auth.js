@@ -1,6 +1,8 @@
-import Cookies from 'js-cookie'
+/** @format */
 
-const TokenKey = 'Admin-Token'
+import Cookies from "js-cookie"
+
+const TokenKey = "Admin-Token"
 
 export function getToken() {
   return Cookies.get(TokenKey)

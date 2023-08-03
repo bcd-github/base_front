@@ -1,14 +1,15 @@
 {
-  "name": "ruoyi",
-  "version": "3.8.5",
+  "name": "base",
+  "version": "1.0.0",
   "description": "御霖管理系统",
-  "author": "若依",
+  "author": "bianchengdong",
   "license": "MIT",
   "scripts": {
     "dev": "vite",
     "build:prod": "vite build",
     "build:stage": "vite build --mode staging",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "prettier": "prettier --write ."
   },
   "repository": {
     "type": "git",
@@ -19,7 +20,7 @@
     "@vueup/vue-quill": "1.1.0",
     "@vueuse/core": "9.5.0",
     "axios": "0.27.2",
-    "echarts": "5.4.0",
+    "echarts": "^5.4.0",
     "element-plus": "2.2.27",
     "file-saver": "2.0.5",
     "fuse.js": "6.6.2",
@@ -36,6 +37,7 @@
     "@vue/compiler-sfc": "3.2.45",
     "autoprefixer": "^10.4.14",
     "postcss": "^8.4.25",
+    "prettier": "3.0.0",
     "sass": "1.56.1",
     "tailwindcss": "^3.3.2",
     "unplugin-auto-import": "0.11.4",
