@@ -3,7 +3,7 @@
 // js实现动态变化的数字
 export default {
   mounted(el, binding) {
-    console.log(binding)
+    // console.log(binding)
     let downRate = 100
     let upRate = 10
 

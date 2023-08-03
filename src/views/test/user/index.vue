@@ -61,7 +61,6 @@
       v-model:limit="pageAble.pageSize"
       @pagination="getTableList"
     />
-   
   </div>
 </template>
 
@@ -73,12 +72,9 @@
 
   const showSearch = ref(true)
 
-  const { tableData, getTableList, pageAble, searchParam, reset, search,loading } = useTable(getList, {}, true)
+  const { tableData, getTableList, pageAble, searchParam, reset, search, loading } = useTable(getList, {}, true)
 
   getTableList()
-
-
-
 
   async function getTableData() {}
 

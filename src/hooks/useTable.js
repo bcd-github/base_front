@@ -2,7 +2,7 @@ import { reactive, computed, toRefs } from "vue";
 import { formatDate } from "@/utils/yulinBase/util.js"
 
 export const useTable = (
-    api,
+    query,
     initParam,
     isPageAble,
 ) => {
@@ -41,13 +41,13 @@ export const useTable = (
     });
 
     const getTableList = async () => {
-        if (!api) return;
+        if (!query) return;
         try {
             // 先把初始化参数和分页参数放到总参数里面
             Object.assign(state.totalParam, initParam, isPageAble ? pageParam.value : {}, state.searchParam);
             
             state.loading = true
-            let res = await api({ ...state.totalParam })
+            let res = await query({ ...state.totalParam })
             state.loading = false
 
             if (isPageAble) {
@@ -82,7 +82,6 @@ export const useTable = (
 
     const updatedTotalParam = () => {
         state.totalParam = {};
-        console.log(state.totalParam)
         // 处理查询参数，可以给查询参数加自定义前缀操作
         let nowSearchParam = {};
         // 防止手动清空输入框携带参数（这里可以自定义查询参数前缀）
@@ -91,13 +90,14 @@ export const useTable = (
             if (state.searchParam[key] || state.searchParam[key] === false || state.searchParam[key] === 0) {
                 nowSearchParam[key] = state.searchParam[key];
             }
-            if (key === 'timeRange') {
+            if (key === 'timeRange' && state.searchParam[key] != null) {
                 nowSearchParam['startTime'] = formatDate(state.searchParam[key][0], 'yyyy-MM-dd HH:mm:ss');
                 nowSearchParam['endTime'] = formatDate(state.searchParam[key][1], 'yyyy-MM-dd HH:mm:ss');
             }
         }
-        delete nowSearchParam.timeRange;
-        delete state.searchParam.timeRange
+        // delete nowSearchParam.timeRange;
+        // 不可以删除timeRange属性，因为这样会导致时间选择器的值丢失
+        // delete state.searchParam.timeRange
         Object.assign(state.totalParam, nowSearchParam, isPageAble ? pageParam.value : {});
         console.log("我是总参数", state.totalParam);
     };

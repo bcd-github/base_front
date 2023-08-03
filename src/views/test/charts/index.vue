@@ -18,7 +18,7 @@
 <script setup>
   import * as echarts from "echarts"
   import { onUnmounted, onMounted } from "vue"
-  import { ElMessage } from "element-plus";
+  import { ElMessage } from "element-plus"
   const longpress = () => {
     ElMessage.success("长按事件触发成功 🎉🎉🎉")
   }
@@ -27,7 +27,6 @@
   onMounted(() => {
     var screenWidth = window.screen.width // 屏幕宽度
     var screenHeight = window.screen.height // 屏幕高度
-    console.log(screenWidth, screenHeight)
     const main = document.getElementById("box")
     // 基于准备好的dom，初始化echarts实例
     myChart = echarts.init(main)
