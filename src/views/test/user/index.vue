@@ -68,7 +68,7 @@
   import { getCurrentInstance, reactive, ref, toRefs } from "vue"
   import { getList, addUser, delUser, editUser } from "@/api/test"
   import { Edit } from "@element-plus/icons-vue"
-  import { useTable } from "../../../hooks/useTable"
+  import { useTable } from "@/hooks/useTable"
 
   const showSearch = ref(true)
 

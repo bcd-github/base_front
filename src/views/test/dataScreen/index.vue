@@ -23,7 +23,7 @@
 
 <script setup>
   import * as echarts from "echarts"
-  import { useEcharts } from "../../../hooks/useEcharts"
+  import { useEcharts } from "@/hooks/useEcharts"
   import { onUnmounted, onMounted, getCurrentInstance } from "vue"
   const { proxy } = getCurrentInstance()
   onMounted(() => {
@@ -347,7 +347,7 @@
     ]
     const xData = []
     const yData = []
-    const min = 50 
+    const min = 50
     data2.map(function (a, b) {
       xData.push(a.name)
       if (a.value === 0) {
