@@ -19,7 +19,7 @@
 </template>
 
 <script setup lang="ts">
-  import { onMounted, ref } from "vue"
+  import { ref } from "vue"
   import { formatDate } from "@/utils/yulinBase/util.js"
   const props = defineProps({
     isClearable: {
@@ -61,9 +61,6 @@
   }
 
   defineExpose({ getTimeRange })
-  onMounted(() => {
-    console.log("时间组件mounted")
-  })
 </script>
 
 <style lang="scss" scoped></style>

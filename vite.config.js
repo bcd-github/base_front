@@ -4,6 +4,7 @@ import { defineConfig, loadEnv } from "vite"
 import path from "path"
 import createVitePlugins from "./vite/plugins"
 import VueDevTools from "vite-plugin-vue-devtools"
+import vueJsx from '@vitejs/plugin-vue-jsx'
 // import PostcssPxToViewport from "postcss-px-to-viewport";
 // https://vitejs.dev/config/
 export default defineConfig(({ mode, command }) => {
@@ -16,7 +17,7 @@ export default defineConfig(({ mode, command }) => {
     base: VITE_APP_ENV === "production" ? "/" : "/",
     // 开启vue调式工具
     // plugins: [createVitePlugins(env, command === "build"), VueDevTools()],
-    plugins: [createVitePlugins(env, command === "build")],
+    plugins: [createVitePlugins(env, command === "build"),vueJsx()],
     resolve: {
       // https://cn.vitejs.dev/config/#resolve-alias
       alias: {
