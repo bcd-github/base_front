@@ -4,11 +4,11 @@ import { reactive, computed, toRefs } from "vue"
 import { formatDate } from "@/utils/yulinBase/util.js"
 
 /**
- * 
+ *
  * @param {*} query 请求api
  * @param {*} initParam  初始化参数
  * @param {*} isPageAble 是否开启分页
- * @returns 
+ * @returns
  */
 
 export const useTable = (query, initParam, isPageAble) => {
@@ -46,6 +46,7 @@ export const useTable = (query, initParam, isPageAble) => {
   })
 
   const getTableList = async () => {
+    console.log(122121)
     if (!query) return
     try {
       // 先把初始化参数和分页参数放到总参数里面
@@ -58,7 +59,7 @@ export const useTable = (query, initParam, isPageAble) => {
       if (isPageAble) {
         state.pageAble.total = res.total
       }
-
+      // 此处是针对ruoyi框架做的处理
       if (Object.keys(res).includes("data")) {
         state.tableData = res.data
       } else if (Object.keys(res).includes("rows")) {

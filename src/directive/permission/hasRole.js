@@ -12,7 +12,7 @@ export default {
     const { value } = binding
     const super_admin = "admin"
     const roles = useUserStore().roles
-
+    
     if (value && value instanceof Array && value.length > 0) {
       const roleFlag = value
 

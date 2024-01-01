@@ -4,6 +4,7 @@
   <div class="h-full bg-sky-300 wrap">
     <div class="title text-center text-blue-500 text-2xl tracking-wide"><span>数据大屏</span></div>
     <div class="flex flex-row content">
+      
       <div class="w-1/3 bg-red-400 h-full p-5 flex flex-col space-y-4">
         <div class="h-3/6 bg-slate-50" ref="leftTop"></div>
         <div class="h-3/6 bg-blue-400" ref="leftBottom"></div>
